@@ -1,21 +1,24 @@
+import { IDbClient } from "../abstraction/clients/IDbClient"
 import { ICourseRepository } from "../abstraction/repository/ICourseRepository"
 import { Course } from "../models/Course"
-import { CourseStatistic } from "../models/CourseStatistic"
+import { CourseStatistics } from "../models/CourseStatistics"
 
 export class CourseRepository implements ICourseRepository {
-	AddCourse(course: Course): Promise<void> {
-		throw new Error("Method not implemented.")
+	constructor(private dbClient: IDbClient) {}
+
+	async AddCourse(course: Course): Promise<void> {
+		await this.dbClient.AddCourse(course)
 	}
 
-	GetCourseById(courseId: number): Promise<Course | undefined> {
-		throw new Error("Method not implemented.")
+	async GetCourseById(courseId: number): Promise<Course | undefined> {
+		return await this.dbClient.GetCourseById(courseId)
 	}
 
 	GetCourses(): Promise<Course[]> {
 		throw new Error("Method not implemented.")
 	}
 
-	GetCourseStatistics(courseId: number): Promise<CourseStatistic> {
+	GetCourseStatistics(courseId: number): Promise<CourseStatistics> {
 		throw new Error("Method not implemented.")
 	}
 }

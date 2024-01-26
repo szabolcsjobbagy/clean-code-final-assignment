@@ -1,12 +1,9 @@
 import { Course } from "../../models/Course"
-import { Lecturer } from "../../models/Lecturer"
-import { Student } from "../../models/Student"
-
-export type ChangedData = Record<string, string | number | Date | boolean>
+import { CourseStatistics } from "../../models/CourseStatistics"
 
 export interface IDbClient {
-	AddItem(item: Course | Student | Lecturer): Promise<void>
-	GetItem(itemId: number): Promise<void>
-	UpdateItem(itemId: number, changedData: ChangedData): Promise<void>
-	DeleteItem(itemId: number): Promise<void>
+	AddCourse(course: Course): Promise<void>
+	GetCourseById(courseId: number): Promise<Course>
+	GetCourses(): Promise<Course[]>
+	GetCourseStatistics(courseId: number): Promise<CourseStatistics>
 }

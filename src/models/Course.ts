@@ -37,11 +37,11 @@ export class Course {
 		return this.students.length
 	}
 
-	public GetCourseId() {
+	public GetId() {
 		return this.courseId
 	}
 
-	public GetCourseName() {
+	public GetName() {
 		return this.courseName
 	}
 

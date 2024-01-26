@@ -1,7 +1,14 @@
+import { IMessageClient } from "../abstraction/clients/IMessageClient"
 import { INotificationService } from "../abstraction/services/INotificationService"
 
 export class NotificationService implements INotificationService {
-	SendNotifications(message: string): Promise<void> {
-		throw new Error("Method not implemented.")
+	constructor(private messageClients: IMessageClient[]) {}
+
+	async SendNotifications(message: string, recipients: string[]): Promise<void> {
+		for (const recipient of recipients) {
+			for (const messageClient of this.messageClients) {
+				await messageClient.SendNotification(message, recipient)
+			}
+		}
 	}
 }

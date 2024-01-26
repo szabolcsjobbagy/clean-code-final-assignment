@@ -29,9 +29,18 @@ export class CourseService implements ICourseService {
 			throw new Error("Course is not yet paid by Student.")
 		}
 		course.AddStudent(student)
-		await this.notificationService.SendNotifications(
-			`${student.GetName()}student was added to course.`
+		const lecturersOfCourse = course.GetLecturers()
+
+		const lecturerEmailAddresses: string[] = lecturersOfCourse.map((lecturer) =>
+			lecturer.GetEmailAddress()
 		)
+
+		const recipientEmailAddresses: string[] = lecturerEmailAddresses.concat(
+			student.GetEmailAddress()
+		)
+
+		const message = `${student.GetName()} student was added to course ${course.GetName()}.`
+		await this.notificationService.SendNotifications(message, recipientEmailAddresses)
 	}
 
 	public async GetCourseById(courseId: number): Promise<Course | undefined> {

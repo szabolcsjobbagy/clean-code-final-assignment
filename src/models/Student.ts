@@ -1,5 +1,5 @@
-import { Course } from "./Course"
-import { Person } from "./Person"
+import { Course } from "./Course.js"
+import { Person } from "./Person.js"
 
 export class Student extends Person {
 	private registrationDate = new Date()
@@ -22,5 +22,19 @@ export class Student extends Person {
 
 	public GetEnrolledCourses() {
 		return this.enrolledCourses
+	}
+
+	public EnrollCourse(course: Course) {
+		this.enrolledCourses.push(course)
+	}
+
+	public UnenrollCourse(course: Course) {
+		this.enrolledCourses = this.enrolledCourses.filter(
+			(enrolledCourse) => enrolledCourse !== course
+		)
+	}
+
+	public setRegistrationDate(registrationDate: Date) {
+		this.registrationDate = registrationDate
 	}
 }

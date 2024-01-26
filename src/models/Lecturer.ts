@@ -1,5 +1,5 @@
-import { Course } from "./Course"
-import { Person } from "./Person"
+import { Course } from "./Course.js"
+import { Person } from "./Person.js"
 
 export class Lecturer extends Person {
 	private startDate: Date = new Date()
@@ -22,5 +22,13 @@ export class Lecturer extends Person {
 
 	public GetAssignedCourses() {
 		return this.assignedCourses
+	}
+
+	public SetStartDate(startDate: Date) {
+		this.startDate = startDate
+	}
+
+	public AddCourse(course: Course) {
+		this.assignedCourses.push(course)
 	}
 }

@@ -1,7 +1,6 @@
-export class CourseStatistic {
+export class CourseStatistics {
 	constructor(
 		private courseId: number,
-		private courseName: string,
 		private totalLectures: number,
 		private lecturesCompleted: number,
 		private progress: number,
@@ -10,10 +9,6 @@ export class CourseStatistic {
 
 	public GetCourseId() {
 		return this.courseId
-	}
-
-	public GetCourseName() {
-		return this.courseName
 	}
 
 	public GetTotalLectures() {
@@ -30,5 +25,25 @@ export class CourseStatistic {
 
 	public GetLastAccessed() {
 		return this.lastAccessed
+	}
+
+	public SetCourseId(courseId: number) {
+		this.courseId = courseId
+	}
+
+	public SetTotalLectures(totalLectures: number) {
+		this.totalLectures = totalLectures
+	}
+
+	public SetLecturesCompleted(lecturesCompleted: number) {
+		this.lecturesCompleted = lecturesCompleted
+	}
+
+	public SetProgress(progress: number) {
+		this.progress = progress
+	}
+
+	public SetLastAccessed(lastAccessed: Date) {
+		this.lastAccessed = lastAccessed
 	}
 }

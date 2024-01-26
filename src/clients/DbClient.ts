@@ -1,22 +1,24 @@
-import { Course } from "../models/Course"
-import { ChangedData, IDbClient } from "../abstraction/clients/IDbClient"
-import { Student } from "../models/Student"
-import { Lecturer } from "../models/Lecturer"
+import { Course } from "../models/Course.js"
+import { IDbClient } from "../abstraction/clients/IDbClient.js"
+import { CourseStatistics } from "../models/CourseStatistics.js"
 
 export class DbClient implements IDbClient {
-	async AddItem(item: Course | Student | Lecturer): Promise<void> {
-		console.log(`Item ${item} added to database.`)
+	async AddCourse(course: Course): Promise<void> {
+		console.log(`Item ${course.GetName()} added to database.`)
 	}
 
-	async GetItem(itemId: number): Promise<void> {
-		console.log(`Item ${itemId} received from database.`)
+	async GetCourseById(courseId: number): Promise<Course> {
+		return new Course(1, "TypeScript Basics", 45000, 4, new Date("2024-01-12"))
 	}
 
-	async UpdateItem(itemId: number, changedData: ChangedData): Promise<void> {
-		console.log(`Item ${itemId} updated in database with changed data: ${changedData}.`)
+	async GetCourses(): Promise<Course[]> {
+		return [
+			new Course(1, "TypeScript Basics", 45000, 4, new Date("2024-01-12")),
+			new Course(2, "TypeScript Advanced", 65000, 4, new Date("2024-02-10")),
+		]
 	}
 
-	async DeleteItem(itemId: number): Promise<void> {
-		console.log(`Item ${itemId} deleted from database.`)
+	async GetCourseStatistics(courseId: number): Promise<CourseStatistics> {
+		return new CourseStatistics(1, 10, 5, 50, new Date("2024-01-12"))
 	}
 }

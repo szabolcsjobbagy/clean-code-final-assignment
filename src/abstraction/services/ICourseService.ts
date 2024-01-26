@@ -1,5 +1,5 @@
 import { Course } from "../../models/Course"
-import { CourseStatistic } from "../../models/CourseStatistic"
+import { CourseStatistics } from "../../models/CourseStatistics"
 import { Student } from "../../models/Student"
 
 export interface ICourseService {
@@ -7,5 +7,5 @@ export interface ICourseService {
 	AddStudentToCourse(student: Student, courseId: number): Promise<void>
 	GetCourseById(courseId: number): Promise<Course | undefined>
 	GetCourses(): Promise<Course[]>
-	GetCourseStatistics(courseId: number): Promise<CourseStatistic>
+	GetCourseStatistics(courseId: number): Promise<CourseStatistics>
 }
