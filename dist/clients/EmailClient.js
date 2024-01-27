@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 export class EmailClient {
     SendNotification(message, recipient) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`Email notification sent to ${recipient} with message: ${message}`);
+            console.log(`Email notification sent to ${recipient.GetEmailAddress()} with message: ${message}`);
         });
     }
 }

@@ -8,23 +8,17 @@ export class Course {
         this.students = [];
         this.lecturers = [];
     }
-    AddLecturer(lecturer) {
-        this.lecturers.push(lecturer);
-    }
-    AddStudent(student) {
+    AddStudentToCourse(student) {
         this.students.push(student);
     }
-    GetLecturers() {
-        return this.lecturers;
-    }
-    GetLecturerCount() {
-        return this.lecturers.length;
+    AddLecturerToCourse(lecturer) {
+        this.lecturers.push(lecturer);
     }
     GetStudents() {
         return this.students;
     }
-    GetStudentCount() {
-        return this.students.length;
+    GetLecturers() {
+        return this.lecturers;
     }
     GetId() {
         return this.courseId;

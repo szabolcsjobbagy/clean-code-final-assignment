@@ -11,12 +11,10 @@ export class NotificationService {
     constructor(messageClients) {
         this.messageClients = messageClients;
     }
-    SendNotifications(message, recipients) {
+    SendNotifications(message, recipient) {
         return __awaiter(this, void 0, void 0, function* () {
-            for (const recipient of recipients) {
-                for (const messageClient of this.messageClients) {
-                    yield messageClient.SendNotification(message, recipient);
-                }
+            for (const messageClient of this.messageClients) {
+                yield messageClient.SendNotification(message, recipient);
             }
         });
     }

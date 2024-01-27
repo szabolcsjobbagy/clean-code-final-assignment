@@ -13,13 +13,12 @@ export class PaymentService {
     }
     GetIsOrderPaid(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const isPaid = yield this.financialApiClient.GetPaymentStatus(studentId, courseId);
-            return isPaid;
+            return yield this.financialApiClient.GetIsOrderPaid(studentId, courseId);
         });
     }
     PayForCourse(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.financialApiClient.UpdatePaymentStatus(studentId, courseId, "paid");
+            yield this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid");
         });
     }
 }

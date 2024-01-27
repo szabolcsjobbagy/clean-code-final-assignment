@@ -1,13 +1,21 @@
 export class CourseStatistics {
-    constructor(courseId, totalLectures, lecturesCompleted, progress, lastAccessed) {
+    constructor(id, courseId, studentId, totalLectures, lecturesCompleted, lastAccessed) {
+        this.id = id;
         this.courseId = courseId;
+        this.studentId = studentId;
         this.totalLectures = totalLectures;
         this.lecturesCompleted = lecturesCompleted;
-        this.progress = progress;
         this.lastAccessed = lastAccessed;
+        this.progress = 0;
+    }
+    GetId() {
+        return this.id;
     }
     GetCourseId() {
         return this.courseId;
+    }
+    GetStudentId() {
+        return this.studentId;
     }
     GetTotalLectures() {
         return this.totalLectures;
@@ -15,14 +23,20 @@ export class CourseStatistics {
     GetLecturesCompleted() {
         return this.lecturesCompleted;
     }
-    GetProgress() {
-        return this.progress;
-    }
     GetLastAccessed() {
         return this.lastAccessed;
     }
+    GetProgress() {
+        return this.progress;
+    }
+    SetId(id) {
+        this.id = id;
+    }
     SetCourseId(courseId) {
         this.courseId = courseId;
+    }
+    SetStudentId(studentId) {
+        this.studentId = studentId;
     }
     SetTotalLectures(totalLectures) {
         this.totalLectures = totalLectures;
@@ -30,10 +44,10 @@ export class CourseStatistics {
     SetLecturesCompleted(lecturesCompleted) {
         this.lecturesCompleted = lecturesCompleted;
     }
-    SetProgress(progress) {
-        this.progress = progress;
-    }
     SetLastAccessed(lastAccessed) {
         this.lastAccessed = lastAccessed;
+    }
+    SetProgress(lecturesCompleted, totalLectures) {
+        this.progress = (lecturesCompleted / totalLectures) * 100;
     }
 }

@@ -1,3 +1,5 @@
+import { Person } from "../../models/Person"
+
 export interface INotificationService {
-	SendNotifications(message: string, recipients: string[]): Promise<void>
+	SendNotifications(message: string, recipient: Person): Promise<void>
 }

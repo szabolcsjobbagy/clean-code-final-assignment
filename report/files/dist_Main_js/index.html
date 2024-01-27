@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - dist\Main.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>dist\Main.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">64.20</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">111</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">34.21</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.63</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var __awaiter = (this &amp;&amp; this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator[&quot;throw&quot;](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { DbClient } from &quot;./clients/DbClient.js&quot;;
+import { EmailClient } from &quot;./clients/EmailClient.js&quot;;
+import { FinancialApiClient } from &quot;./clients/FinancialApiClient.js&quot;;
+import { PushNotificationClient } from &quot;./clients/PushNotificationClient.js&quot;;
+import { Course } from &quot;./models/Course.js&quot;;
+import { CourseStatistics } from &quot;./models/CourseStatistics.js&quot;;
+import { Lecturer } from &quot;./models/Lecturer.js&quot;;
+import { Student } from &quot;./models/Student.js&quot;;
+import { CourseRepository } from &quot;./repository/CourseRepository.js&quot;;
+import { CourseStatisticsRepository } from &quot;./repository/CourseStatisticsRepository.js&quot;;
+import { LecturerRepository } from &quot;./repository/LecturerRepository.js&quot;;
+import { StudentRepository } from &quot;./repository/StudentRepository.js&quot;;
+import { CourseService } from &quot;./services/CourseService.js&quot;;
+import { NotificationService } from &quot;./services/NotificationService.js&quot;;
+import { PaymentService } from &quot;./services/PaymentService.js&quot;;
+main();
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { student1, student2, lecturer1, lecturer2, course1, course2, courseStatistics1, courseStatistics2, } = createModelInstances();
+        const { dbClient, financialApiClient, emailClient, pushNotificationClient, messageClients } = createClientInstances();
+        const { courseRepository, studentRepository, lecturerRepository, courseStatisticsRepository } = createRepositoryInstances(dbClient);
+        const { notificationService, paymentService, courseService } = createServiceInstances(messageClients, financialApiClient, courseRepository);
+        student1.setRegistrationDate(new Date(&quot;2024-01-02&quot;));
+        student2.setRegistrationDate(new Date(&quot;2024-01-04&quot;));
+        studentRepository.AddStudent(student1);
+        studentRepository.AddStudent(student2);
+        lecturer1.SetStartDate(new Date(&quot;2023-06-08&quot;));
+        lecturer2.SetStartDate(new Date(&quot;2023-07-03&quot;));
+        lecturerRepository.AddLecturer(lecturer1);
+        lecturerRepository.AddLecturer(lecturer2);
+        yield courseRepository.AddLecturerToCourse(lecturer1, 1);
+        yield courseRepository.AddLecturerToCourse(lecturer2, 2);
+        yield courseRepository.AddCourse(course1);
+        yield courseRepository.AddCourse(course2);
+        yield paymentService.PayForCourse(student1.GetId(), course1.GetId());
+        yield paymentService.PayForCourse(student2.GetId(), course2.GetId());
+        console.log(&quot;Payment items:\n&quot;);
+        console.log(yield financialApiClient.GetPaymentItems());
+        yield courseService.AddPaidStudentToCourse(student1, course1.GetId());
+        yield courseService.AddPaidStudentToCourse(student2, course2.GetId());
+        courseStatisticsRepository.AddCourseStatistics(courseStatistics1);
+        courseStatisticsRepository.AddCourseStatistics(courseStatistics2);
+        console.log(yield courseRepository.GetCourseStatisticsById(course1.GetId()));
+        console.log(yield courseRepository.GetCourseStatisticsById(course2.GetId()));
+    });
+}
+function createModelInstances() {
+    const student1 = new Student(1, &quot;Trainee Smith&quot;, new Date(&quot;1999-05-04&quot;), &quot;male&quot;, &quot;trainee.smith@gmail.com&quot;, &quot;+36301234567&quot;);
+    const student2 = new Student(2, &quot;Trainee Newton&quot;, new Date(&quot;2001-08-09&quot;), &quot;female&quot;, &quot;trainee.newton@gmail.com&quot;, &quot;+36709373495&quot;);
+    const lecturer1 = new Lecturer(1, &quot;Trainer Taylor&quot;, new Date(&quot;1986-01-01&quot;), &quot;female&quot;, &quot;trainer.taylor@gmail.com&quot;, &quot;+36203539854&quot;);
+    const lecturer2 = new Lecturer(2, &quot;Trainer Brown&quot;, new Date(&quot;1986-01-01&quot;), &quot;male&quot;, &quot;trainer.brown@gmail.com&quot;, &quot;+36208265385&quot;);
+    const course1 = new Course(1, &quot;TypeScript BASICS&quot;, 45000, 4, new Date(&quot;2024-01-12&quot;));
+    const course2 = new Course(2, &quot;TypeScript ADVANCED&quot;, 65000, 4, new Date(&quot;2024-02-10&quot;));
+    const courseStatistics1 = new CourseStatistics(1, 1, 1, 0, 0, new Date(&quot;2024-01-12&quot;));
+    const courseStatistics2 = new CourseStatistics(2, 2, 2, 0, 0, new Date(&quot;2024-02-10&quot;));
+    return {
+        student1,
+        student2,
+        lecturer1,
+        lecturer2,
+        course1,
+        course2,
+        courseStatistics1,
+        courseStatistics2,
+    };
+}
+function createClientInstances() {
+    const dbClient = new DbClient();
+    const financialApiClient = new FinancialApiClient();
+    const emailClient = new EmailClient();
+    const pushNotificationClient = new PushNotificationClient();
+    const messageClients = [emailClient, pushNotificationClient];
+    return {
+        dbClient,
+        financialApiClient,
+        emailClient,
+        pushNotificationClient,
+        messageClients,
+    };
+}
+function createRepositoryInstances(dbClient) {
+    const courseRepository = new CourseRepository(dbClient);
+    const studentRepository = new StudentRepository(dbClient);
+    const lecturerRepository = new LecturerRepository(dbClient);
+    const courseStatisticsRepository = new CourseStatisticsRepository(dbClient);
+    return {
+        courseRepository,
+        studentRepository,
+        lecturerRepository,
+        courseStatisticsRepository,
+    };
+}
+function createServiceInstances(messageClients, financialApiClient, courseRepository) {
+    const notificationService = new NotificationService(messageClients);
+    const paymentService = new PaymentService(financialApiClient);
+    const courseService = new CourseService(courseRepository, paymentService, notificationService);
+    return {
+        notificationService,
+        paymentService,
+        courseService,
+    };
+}</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

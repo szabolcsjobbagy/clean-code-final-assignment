@@ -13,18 +13,32 @@ export class CourseRepository {
     }
     AddCourse(course) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddCourse(course);
+            yield this.dbClient.AddCourseToDb(course);
         });
     }
-    GetCourseById(courseId) {
+    AddStudentToCourse(student, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetCourseById(courseId);
+            yield this.dbClient.AddStudentToCourseInDb(student, courseId);
+        });
+    }
+    AddLecturerToCourse(lecturer, courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.dbClient.AddLecturerToCourseInDb(lecturer, courseId);
+        });
+    }
+    GetCourseById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.dbClient.GetCourseByIdFromDb(id);
         });
     }
     GetCourses() {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.dbClient.GetCoursesFromDb();
+        });
     }
-    GetCourseStatistics(courseId) {
-        throw new Error("Method not implemented.");
+    GetCourseStatisticsById(courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.dbClient.GetCourseStatisticsFromDb(courseId);
+        });
     }
 }

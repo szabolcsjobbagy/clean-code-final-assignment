@@ -1,7 +1,10 @@
 import { IMessageClient } from "../abstraction/clients/IMessageClient"
+import { Person } from "../models/Person"
 
 export class PushNotificationClient implements IMessageClient {
-	async SendNotification(message: string, recipient: string): Promise<void> {
-		console.log(`Push notification sent to ${recipient} with message: ${message}`)
+	async SendNotification(message: string, recipient: Person): Promise<void> {
+		console.log(
+			`Push notification sent to ${recipient.GetPhoneNumber()} with message: ${message}`
+		)
 	}
 }

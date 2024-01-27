@@ -8,38 +8,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 export class FinancialApiClient {
-    GetPaymentStatus(studentId, courseId) {
+    constructor() {
+        this.paymentItems = [];
+    }
+    GetIsOrderPaid(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.checkPaymentStatus(studentId, courseId);
+            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
+            if (!paymentItem)
+                return false;
+            if (paymentItem.status === "not paid")
+                return false;
+            return true;
         });
     }
-    UpdatePaymentStatus(studentId, courseId, status) {
+    ChangePaymentStatus(studentId, courseId, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`Payment status for student ${studentId} and course ${courseId} updated to ${status}`);
+            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
+            if (paymentItem) {
+                yield this.UpdatePaymentItem(paymentItem, status);
+            }
+            else {
+                yield this.AddPaymentItem(studentId, courseId, status);
+            }
         });
     }
-    checkPaymentStatus(studentId, courseId) {
-        const paymentStatuses = [
-            {
-                id: 1,
-                studentId: 1,
-                courseId: 1,
-                status: "paid",
-            },
-            {
-                id: 2,
-                studentId: 1,
-                courseId: 2,
-                status: "not paid",
-            },
-            {
-                id: 3,
-                studentId: 2,
-                courseId: 1,
-                status: "paid",
-            },
-        ];
-        const paymentStatus = paymentStatuses.find((item) => item.studentId === studentId && item.courseId === courseId);
-        return (paymentStatus === null || paymentStatus === void 0 ? void 0 : paymentStatus.status) === "paid" ? true : false;
+    GetPaymentItems() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.paymentItems;
+        });
+    }
+    AddPaymentItem(studentId, courseId, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.paymentItems.push({
+                id: this.paymentItems.length + 1,
+                studentId,
+                courseId,
+                status,
+            });
+            console.log(`Payment status ADDED for student ${studentId} and course ${courseId} with status: ${status}`);
+        });
+    }
+    UpdatePaymentItem(paymentItem, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            paymentItem.status = status;
+            console.log(`Payment status UPDATED for student ${paymentItem.studentId} and course ${paymentItem.courseId} with status: ${status}`);
+        });
+    }
+    FindPaymentItem(studentId, courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const paymentItem = this.paymentItems.find((item) => item.studentId === studentId && item.courseId === courseId);
+            if (paymentItem)
+                return paymentItem;
+            return undefined;
+        });
     }
 }

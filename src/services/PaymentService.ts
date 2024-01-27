@@ -5,11 +5,10 @@ export class PaymentService implements IPaymentService {
 	constructor(private financialApiClient: IFinancialApiClient) {}
 
 	async GetIsOrderPaid(studentId: number, courseId: number): Promise<Boolean> {
-		const isPaid = await this.financialApiClient.GetPaymentStatus(studentId, courseId)
-		return isPaid
+		return await this.financialApiClient.GetIsOrderPaid(studentId, courseId)
 	}
 
 	async PayForCourse(studentId: number, courseId: number): Promise<void> {
-		await this.financialApiClient.UpdatePaymentStatus(studentId, courseId, "paid")
+		await this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid")
 	}
 }

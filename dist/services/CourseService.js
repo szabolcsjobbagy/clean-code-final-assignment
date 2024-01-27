@@ -13,42 +13,19 @@ export class CourseService {
         this.paymentService = paymentService;
         this.notificationService = notificationService;
     }
-    AddCourse(course) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.courseRepository.AddCourse(course);
-        });
-    }
-    AddStudentToCourse(student, courseId) {
+    AddPaidStudentToCourse(student, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
             const course = yield this.courseRepository.GetCourseById(courseId);
             if (!course) {
-                throw new Error("Course not found");
+                throw new Error(`Course ${courseId} not found.`);
             }
             const isCoursePaidByStudent = yield this.paymentService.GetIsOrderPaid(student.GetId(), courseId);
             if (!isCoursePaidByStudent) {
-                throw new Error("Course is not yet paid by Student.");
+                throw new Error(`Course ${course.GetId()} - ${course.GetName()} is not yet paid by student: ${student.GetId()} - ${student.GetName()}.`);
             }
-            course.AddStudent(student);
-            const lecturersOfCourse = course.GetLecturers();
-            const lecturerEmailAddresses = lecturersOfCourse.map((lecturer) => lecturer.GetEmailAddress());
-            const recipientEmailAddresses = lecturerEmailAddresses.concat(student.GetEmailAddress());
-            const message = `${student.GetName()} student was added to course ${course.GetName()}.`;
-            yield this.notificationService.SendNotifications(message, recipientEmailAddresses);
-        });
-    }
-    GetCourseById(courseId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.courseRepository.GetCourseById(courseId);
-        });
-    }
-    GetCourses() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.courseRepository.GetCourses();
-        });
-    }
-    GetCourseStatistics(courseId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.courseRepository.GetCourseStatistics(courseId);
+            yield this.courseRepository.AddStudentToCourse(student, course.GetId());
+            const message = `${student.GetId()} - ${student.GetName()} student was added to course: ${course.GetId()} - ${course.GetName()}.`;
+            yield this.notificationService.SendNotifications(message, student);
         });
     }
 }
