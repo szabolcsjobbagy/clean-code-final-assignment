@@ -7,7 +7,7 @@ export class Student extends Person {
     GetRegistrationDate() {
         return this.registrationDate;
     }
-    setRegistrationDate(registrationDate) {
+    SetRegistrationDate(registrationDate) {
         this.registrationDate = registrationDate;
     }
 }

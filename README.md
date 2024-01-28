@@ -8,6 +8,8 @@ CourseService class:
 
 -   Csak az "AddStudentToCourse" metódust hagytam meg, amit átneveztem a beszédesebb "AddPaidStudentToCourse"-ra
 
+-   Mivel az applikáció nagyra nőhet, egyre komplexebb lehet, nem a "Singleton" design pattern-t követném 1 db top-level "main entry point" class-szal, hanem inkább engednék több top-level class-t, így csökkentem a metódusok duplikációját, kisebb, könnyen kezelhető részeket készítve
+
 CourseStatistics class:
 
 -   A "progress" property-t kivettem a constructor-ból, és a "SetProgress" metódussal így számoltattam ki: (lecturesCompleted / totalLectures) \* 100
@@ -22,11 +24,11 @@ Course class:
 
 CourseRepository class:
 
--   A "GetCourseStatistics" metódusnál a return type-ot átállítottam "Promise<CourseStatistics>"-ról "Promise<CourseStatistics[]>"-ra, mert minden kurzusnál Student-enként külön statisztika van, tehát egy array (a studentek statisztikáinak listája) lesz a kimenet, nem csak 1db statisztika, és mivel itt is "courseId" alapján kérjük le a statisztikákat, átneveztem "GetCourseStatisticsById"-re
+-   A "GetCourseStatistics" metódusnál a return type-ot átállítottam "Promise<CourseStatistics>"-ról "Promise<CourseStatistics[]>"-ra, mert minden kurzusnál Student-enként külön statisztika van, tehát egy array (a student-ek kurzus-statisztikáinak listája) lesz a kimenet, nem csak 1db statisztika, és mivel itt is "courseId" alapján kérjük le a statisztikákat, átneveztem "GetCourseStatisticsById"-re
 
-CourseStatisticsRepository class:
+CourseStatisticsRepository, StudentRepository, LecturerRepository class-ok:
 
--   Külön készítettem ezt a class-t a kurzus statisztikák adatbázishoz hozzáadására ill. lekérdezésére
+-   Külön készítettem class-okat a kurzus statisztikák, diákok és oktatók adatbázishoz hozzáadására ill. lekérdezésére
 
 DbClient class:
 

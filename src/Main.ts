@@ -44,8 +44,8 @@ async function main() {
 		courseRepository
 	)
 
-	student1.setRegistrationDate(new Date("2024-01-02"))
-	student2.setRegistrationDate(new Date("2024-01-04"))
+	student1.SetRegistrationDate(new Date("2024-01-02"))
+	student2.SetRegistrationDate(new Date("2024-01-04"))
 
 	studentRepository.AddStudent(student1)
 	studentRepository.AddStudent(student2)
@@ -62,8 +62,8 @@ async function main() {
 	await courseRepository.AddCourse(course1)
 	await courseRepository.AddCourse(course2)
 
-	await paymentService.PayForCourse(student1.GetId(), course1.GetId())
-	await paymentService.PayForCourse(student2.GetId(), course2.GetId())
+	console.log(await paymentService.PayForCourse(student1.GetId(), course1.GetId()))
+	console.log(await paymentService.PayForCourse(student2.GetId(), course2.GetId()))
 
 	console.log("Payment items:\n")
 	console.log(await financialApiClient.GetPaymentItems())
@@ -71,8 +71,8 @@ async function main() {
 	await courseService.AddPaidStudentToCourse(student1, course1.GetId())
 	await courseService.AddPaidStudentToCourse(student2, course2.GetId())
 
-	courseStatisticsRepository.AddCourseStatistics(courseStatistics1)
-	courseStatisticsRepository.AddCourseStatistics(courseStatistics2)
+	await courseStatisticsRepository.AddCourseStatistics(courseStatistics1)
+	await courseStatisticsRepository.AddCourseStatistics(courseStatistics2)
 
 	console.log(await courseRepository.GetCourseStatisticsById(course1.GetId()))
 	console.log(await courseRepository.GetCourseStatisticsById(course2.GetId()))

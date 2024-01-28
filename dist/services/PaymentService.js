@@ -7,18 +7,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from "../errors/networkError.js";
 export class PaymentService {
     constructor(financialApiClient) {
         this.financialApiClient = financialApiClient;
     }
     GetIsOrderPaid(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.financialApiClient.GetIsOrderPaid(studentId, courseId);
+            try {
+                return yield this.financialApiClient.GetIsOrderPaid(studentId, courseId);
+            }
+            catch (error) {
+                throw new NetworkError("Financial API client not accessible.", error);
+            }
         });
     }
     PayForCourse(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid");
+            try {
+                return yield this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid");
+            }
+            catch (error) {
+                throw new NetworkError("Financial API client not accessible.", error);
+            }
         });
     }
 }

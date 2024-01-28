@@ -7,10 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { ValidationError } from "../errors/validationError.js";
 export class EmailClient {
     SendNotification(message, recipient) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.isValidEmail(recipient.GetEmailAddress())) {
+                throw new ValidationError("Invalid email address.");
+            }
             console.log(`Email notification sent to ${recipient.GetEmailAddress()} with message: ${message}`);
         });
+    }
+    isValidEmail(emailAddress) {
+        const emailRegex = /\S+@\S+\.\S+/;
+        return emailRegex.test(emailAddress);
     }
 }

@@ -30,6 +30,7 @@ export class FinancialApiClient {
             else {
                 yield this.AddPaymentItem(studentId, courseId, status);
             }
+            return `Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`;
         });
     }
     GetPaymentItems() {
@@ -45,13 +46,11 @@ export class FinancialApiClient {
                 courseId,
                 status,
             });
-            console.log(`Payment status ADDED for student ${studentId} and course ${courseId} with status: ${status}`);
         });
     }
     UpdatePaymentItem(paymentItem, status) {
         return __awaiter(this, void 0, void 0, function* () {
             paymentItem.status = status;
-            console.log(`Payment status UPDATED for student ${paymentItem.studentId} and course ${paymentItem.courseId} with status: ${status}`);
         });
     }
     FindPaymentItem(studentId, courseId) {

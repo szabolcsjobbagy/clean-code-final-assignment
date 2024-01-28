@@ -11,7 +11,11 @@ export class FinancialApiClient implements IFinancialApiClient {
 		return true
 	}
 
-	async ChangePaymentStatus(studentId: number, courseId: number, status: string): Promise<void> {
+	async ChangePaymentStatus(
+		studentId: number,
+		courseId: number,
+		status: string
+	): Promise<string> {
 		const paymentItem = await this.FindPaymentItem(studentId, courseId)
 
 		if (paymentItem) {
@@ -19,6 +23,8 @@ export class FinancialApiClient implements IFinancialApiClient {
 		} else {
 			await this.AddPaymentItem(studentId, courseId, status)
 		}
+
+		return `Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`
 	}
 
 	async GetPaymentItems(): Promise<PaymentItem[]> {
@@ -36,17 +42,10 @@ export class FinancialApiClient implements IFinancialApiClient {
 			courseId,
 			status,
 		})
-		console.log(
-			`Payment status ADDED for student ${studentId} and course ${courseId} with status: ${status}`
-		)
 	}
 
 	private async UpdatePaymentItem(paymentItem: PaymentItem, status: string): Promise<void> {
 		paymentItem.status = status
-
-		console.log(
-			`Payment status UPDATED for student ${paymentItem.studentId} and course ${paymentItem.courseId} with status: ${status}`
-		)
 	}
 
 	private async FindPaymentItem(

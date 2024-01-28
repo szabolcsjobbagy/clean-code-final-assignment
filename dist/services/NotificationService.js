@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from "../errors/networkError.js";
+import { ValidationError } from "../errors/validationError.js";
 export class NotificationService {
     constructor(messageClients) {
         this.messageClients = messageClients;
@@ -14,7 +16,15 @@ export class NotificationService {
     SendNotifications(message, recipient) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const messageClient of this.messageClients) {
-                yield messageClient.SendNotification(message, recipient);
+                try {
+                    yield messageClient.SendNotification(message, recipient);
+                }
+                catch (error) {
+                    if (error instanceof ValidationError) {
+                        throw error;
+                    }
+                    throw new NetworkError("Message client not accessible.", error);
+                }
             }
         });
     }

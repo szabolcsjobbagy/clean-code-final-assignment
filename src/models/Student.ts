@@ -18,7 +18,7 @@ export class Student extends Person {
 		return this.registrationDate
 	}
 
-	public setRegistrationDate(registrationDate: Date) {
+	public SetRegistrationDate(registrationDate: Date) {
 		this.registrationDate = registrationDate
 	}
 }
