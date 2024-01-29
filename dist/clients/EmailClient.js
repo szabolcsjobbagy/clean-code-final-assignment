@@ -14,6 +14,7 @@ export class EmailClient {
             if (!this.isValidEmail(recipient.GetEmailAddress())) {
                 throw new ValidationError("Invalid email address.");
             }
+            // Send email
             console.log(`Email notification sent to ${recipient.GetEmailAddress()} with message: ${message}`);
         });
     }

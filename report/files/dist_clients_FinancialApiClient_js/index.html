@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">80.83</p>
+      <p class="stat">80.01</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">65</p>
+      <p class="stat">34</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">51.96</p>
+      <p class="stat">28.75</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.72</p>
+      <p class="stat">0.44</p>
     </div>
   </div>
 </div>
@@ -99,58 +99,27 @@
     });
 };
 export class FinancialApiClient {
-    constructor() {
-        this.paymentItems = [];
+    constructor(baseUrl) {
+        this.baseUrl = baseUrl;
     }
     GetIsOrderPaid(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
-            if (!paymentItem)
-                return false;
-            if (paymentItem.status === &quot;not paid&quot;)
-                return false;
-            return true;
+            const response = yield fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`);
+            const data = yield response.json();
+            return data.status === &quot;paid&quot; ? true : false;
         });
     }
     ChangePaymentStatus(studentId, courseId, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
-            if (paymentItem) {
-                yield this.UpdatePaymentItem(paymentItem, status);
-            }
-            else {
-                yield this.AddPaymentItem(studentId, courseId, status);
-            }
-        });
-    }
-    GetPaymentItems() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.paymentItems;
-        });
-    }
-    AddPaymentItem(studentId, courseId, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.paymentItems.push({
-                id: this.paymentItems.length + 1,
-                studentId,
-                courseId,
-                status,
+            const response = yield fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`, {
+                method: &quot;PUT&quot;,
+                headers: {
+                    &quot;Content-Type&quot;: &quot;application/json&quot;,
+                },
+                body: JSON.stringify({
+                    status: status,
+                }),
             });
-            console.log(`Payment status ADDED for student ${studentId} and course ${courseId} with status: ${status}`);
-        });
-    }
-    UpdatePaymentItem(paymentItem, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            paymentItem.status = status;
-            console.log(`Payment status UPDATED for student ${paymentItem.studentId} and course ${paymentItem.courseId} with status: ${status}`);
-        });
-    }
-    FindPaymentItem(studentId, courseId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = this.paymentItems.find((item) =&gt; item.studentId === studentId &amp;&amp; item.courseId === courseId);
-            if (paymentItem)
-                return paymentItem;
-            return undefined;
         });
     }
 }</textarea>

@@ -1,11 +1,11 @@
 import { mock, mockReset } from "jest-mock-extended"
 
-import { CourseService } from "../../src/services/CourseService"
-import { ICourseRepository } from "../../src/abstraction/repository/ICourseRepository"
-import { IPaymentService } from "../../src/abstraction/services/IPaymentService"
-import { INotificationService } from "../../src/abstraction/services/INotificationService"
-import { Student } from "../../src/models/Student"
-import { Course } from "../../src/models/Course"
+import { CourseService } from "../../src/services/CourseService.js"
+import { ICourseRepository } from "../../src/abstraction/repository/ICourseRepository.js"
+import { IPaymentService } from "../../src/abstraction/services/IPaymentService.js"
+import { INotificationService } from "../../src/abstraction/services/INotificationService.js"
+import { Student } from "../../src/models/Student.js"
+import { Course } from "../../src/models/Course.js"
 
 let sut: CourseService
 
@@ -35,6 +35,7 @@ describe("CourseService", () => {
 				)
 				const courseId = 1
 				const course = new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12"))
+				const message = `Student ${student.GetId()} added to course ${courseId}.`
 
 				mockedCourseRepository.GetCourseById.mockResolvedValue(course)
 				mockedPaymentService.GetIsOrderPaid.mockResolvedValue(true)
@@ -55,7 +56,7 @@ describe("CourseService", () => {
 					courseId
 				)
 				expect(mockedNotificationService.SendNotifications).toHaveBeenCalledWith(
-					`${student.GetId()} - ${student.GetName()} student was added to course: ${courseId} - ${course.GetName()}.`,
+					message,
 					student
 				)
 
@@ -77,6 +78,7 @@ describe("CourseService", () => {
 					"+36301234567"
 				)
 				const courseId = 3
+				const expectedErrorMessage = `Course ${courseId} not found.`
 
 				// Arrange
 				mockedCourseRepository.GetCourseById.mockResolvedValue(undefined)
@@ -86,7 +88,7 @@ describe("CourseService", () => {
 
 				// Act & Assert
 				await expect(sut.AddPaidStudentToCourse(student, courseId)).rejects.toThrow(
-					`Course ${courseId} not found.`
+					expectedErrorMessage
 				)
 
 				expect(mockedCourseRepository.GetCourseById).toHaveBeenCalledTimes(1)
@@ -107,6 +109,7 @@ describe("CourseService", () => {
 				)
 				const courseId = 1
 				const course = new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12"))
+				const expectedErrorMessage = `Course ${courseId} is not yet paid by student ${student.GetId()}.`
 
 				mockedCourseRepository.GetCourseById.mockResolvedValue(course)
 				mockedPaymentService.GetIsOrderPaid.mockResolvedValue(false)
@@ -115,7 +118,7 @@ describe("CourseService", () => {
 
 				// Act & Assert
 				await expect(sut.AddPaidStudentToCourse(student, courseId)).rejects.toThrow(
-					`Course ${courseId} - ${course.GetName()} is not yet paid by student: ${student.GetId()} - ${student.GetName()}.`
+					expectedErrorMessage
 				)
 
 				expect(mockedCourseRepository.GetCourseById).toHaveBeenCalledTimes(1)

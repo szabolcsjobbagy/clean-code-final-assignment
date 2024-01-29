@@ -24,13 +24,13 @@ export class CourseService implements ICourseService {
 
 		if (!isCoursePaidByStudent) {
 			throw new Error(
-				`Course ${course.GetId()} - ${course.GetName()} is not yet paid by student: ${student.GetId()} - ${student.GetName()}.`
+				`Course ${course.GetId()} is not yet paid by student ${student.GetId()}.`
 			)
 		}
 
 		await this.courseRepository.AddStudentToCourse(student, course.GetId())
 
-		const message = `${student.GetId()} - ${student.GetName()} student was added to course: ${course.GetId()} - ${course.GetName()}.`
+		const message = `Student ${student.GetId()} added to course ${course.GetId()}.`
 		await this.notificationService.SendNotifications(message, student)
 	}
 }

@@ -31,4 +31,28 @@ export class Person {
 	public GetPhoneNumber() {
 		return this.phoneNumber
 	}
+
+	public SetId(id: number) {
+		this.id = id
+	}
+
+	public SetName(name: string) {
+		this.name = name
+	}
+
+	public SetBirthDate(birthDate: Date) {
+		this.birthDate = birthDate
+	}
+
+	public SetGender(gender: string) {
+		this.gender = gender
+	}
+
+	public SetEmailAddress(emailAddress: string) {
+		this.emailAddress = emailAddress
+	}
+
+	public SetPhoneNumber(phoneNumber: string) {
+		this.phoneNumber = phoneNumber
+	}
 }

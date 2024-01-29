@@ -7,23 +7,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from "../errors/networkError.js";
+import { NotFoundError } from "../errors/notFoundError.js";
 export class StudentRepository {
     constructor(dbClient) {
         this.dbClient = dbClient;
     }
     AddStudent(student) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddStudentToDb(student);
+            try {
+                yield this.dbClient.AddStudentToDb(student);
+                console.log(`Student ${student.GetId()} added to database.`);
+            }
+            catch (error) {
+                throw new NetworkError("Database client not accessible.", error);
+            }
         });
     }
     GetStudentById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetStudentByIdFromDb(id);
+            try {
+                return yield this.dbClient.GetStudentByIdFromDb(id);
+            }
+            catch (error) {
+                if (error instanceof NotFoundError) {
+                    throw new NotFoundError(`Student ${id} not found in database.`);
+                }
+                throw new NetworkError("Database client not accessible.", error);
+            }
         });
     }
     GetStudents() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetStudentsFromDb();
+            try {
+                return yield this.dbClient.GetStudentsFromDb();
+            }
+            catch (error) {
+                throw new NetworkError("Database client not accessible.", error);
+            }
+        });
+    }
+    GetCourseStatisticsByStudentId(studentId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.dbClient.GetCourseStatisticsByStudentIdFromDb(studentId);
+            }
+            catch (error) {
+                throw new NetworkError("Database client not accessible.", error);
+            }
         });
     }
 }

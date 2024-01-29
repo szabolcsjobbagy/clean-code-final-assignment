@@ -1,8 +1,11 @@
 import { mock, mockReset } from "jest-mock-extended"
 
-import { StudentRepository } from "../../src/repository/StudentRepository"
-import { NetworkError } from "../../src/errors/networkError"
-import { IDbClient } from "../../src/abstraction/clients/IDbClient"
+import { StudentRepository } from "../../src/repository/StudentRepository.js"
+import { NetworkError } from "../../src/errors/networkError.js"
+import { NotFoundError } from "../../src/errors/notFoundError.js"
+import { IDbClient } from "../../src/abstraction/clients/IDbClient.js"
+import { Student } from "../../src/models/Student.js"
+import { CourseStatistics } from "../../src/models/CourseStatistics.js"
 
 let sut: StudentRepository
 
@@ -16,102 +19,205 @@ beforeEach(() => {
 
 describe("StudentRepository", () => {
 	describe("AddStudent", () => {
-		const studentId = 1
-		const courseId = 1
+		const student = new Student(
+			1,
+			"Trainee Smith",
+			new Date("1999-05-04"),
+			"male",
+			"trainee.smith@gmail.com",
+			"+36301234567"
+		)
+		const mockedMethod = mockedDbClient.AddStudentToDb
 
 		describe("Happy paths", () => {
 			it("should add Student to database", async () => {
 				// Arrange
-				mockedDbClient.AddStudentToDb.mockResolvedValue(true)
+				mockedMethod.mockResolvedValue()
+				const consoleLogSpy = jest.spyOn(console, "log")
+				const expectedLoggedMessage = `Student ${student.GetId()} added to database.`
 
 				// Act
-				const result = await sut.AddStudent(studentId, courseId)
+				await sut.AddStudent(student)
 
 				// Assert
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledWith(studentId, courseId)
-
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledTimes(1)
-				expect(result).toBe(true)
-			})
-
-			it("should get FALSE if order is not paid", async () => {
-				// Arrange
-				mockedDbClient.AddStudentToDb.mockResolvedValue(false)
-
-				// Act
-				const result = await sut.AddStudent(studentId, courseId)
-
-				// Assert
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledWith(studentId, courseId)
-
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledTimes(1)
-				expect(result).toBe(false)
+				expect(mockedMethod).toHaveBeenCalledWith(student)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+				expect(consoleLogSpy).toHaveBeenCalledWith(expectedLoggedMessage)
 			})
 		})
 
 		describe("Error paths", () => {
-			it("should throw an error if financial API client is not accessible", async () => {
+			it("should throw an error if db client is not accessible", async () => {
 				// Arrange
 				const originalError = new Error(".....")
-				mockedDbClient.AddStudentToDb.mockRejectedValue(originalError)
-				const customErrorMessage = "Financial API client not accessible."
+				mockedMethod.mockRejectedValue(originalError)
+				const customErrorMessage = "Database client not accessible."
 				const expectedError = new NetworkError(customErrorMessage)
 
 				// Act & Assert
-				await expect(sut.AddStudent(studentId, courseId)).rejects.toThrow(expectedError)
+				await expect(sut.AddStudent(student)).rejects.toThrow(expectedError)
 
 				// Assert
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledWith(studentId, courseId)
-
-				expect(mockedDbClient.AddStudentToDb).toHaveBeenCalledTimes(1)
+				expect(mockedMethod).toHaveBeenCalledWith(student)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
 			})
 		})
 	})
 
 	describe("GetStudentById", () => {
 		const studentId = 1
-		const courseId = 1
+		const mockedMethod = mockedDbClient.GetStudentByIdFromDb
 
 		describe("Happy paths", () => {
-			it("should add/update payment status of order to 'paid'", async () => {
+			it("should get Student from database", async () => {
 				// Arrange
-				const responseMessage = "Payment status changed to 'paid'."
-				mockedDbClient.GetStudentByIdFromDb.mockResolvedValue(responseMessage)
-
-				// Act
-				const result = await sut.GetStudentById(studentId, courseId)
-
-				// Assert
-				expect(mockedDbClient.GetStudentByIdFromDb).toHaveBeenCalledWith(
-					studentId,
-					courseId,
-					"paid"
+				const student = new Student(
+					1,
+					"Trainee Smith",
+					new Date("1999-05-04"),
+					"male",
+					"trainee.smith@gmail.com",
+					"+36301234567"
 				)
 
-				expect(mockedDbClient.GetStudentByIdFromDb).toHaveBeenCalledTimes(1)
-				expect(result).toBe(responseMessage)
+				mockedMethod.mockResolvedValue(student)
+
+				// Act
+				const result = await sut.GetStudentById(studentId)
+
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith(studentId)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+				expect(result).toBe(student)
 			})
 		})
 
 		describe("Error paths", () => {
-			it("should throw an error if financial API client is not accessible", async () => {
+			it("should throw a Network error if db client is not accessible", async () => {
 				// Arrange
 				const originalError = new Error(".....")
-				mockedDbClient.GetStudentByIdFromDb.mockRejectedValue(originalError)
-				const customErrorMessage = "Financial API client not accessible."
+				mockedMethod.mockRejectedValue(originalError)
+				const customErrorMessage = "Database client not accessible."
 				const expectedError = new NetworkError(customErrorMessage)
 
 				// Act & Assert
-				await expect(sut.GetStudentById(studentId, courseId)).rejects.toThrow(expectedError)
+				await expect(sut.GetStudentById(studentId)).rejects.toThrow(expectedError)
 
 				// Assert
-				expect(mockedDbClient.GetStudentByIdFromDb).toHaveBeenCalledWith(
-					studentId,
-					courseId,
-					"paid"
+				expect(mockedMethod).toHaveBeenCalledWith(studentId)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+			})
+
+			it("should throw a Not Found error if student is not found in database", async () => {
+				// Arrange
+				const originalError = new NotFoundError(".....")
+				mockedDbClient.GetStudentByIdFromDb.mockRejectedValue(originalError)
+				const customErrorMessage = `Student ${studentId} not found in database.`
+				const expectedError = new NotFoundError(customErrorMessage)
+
+				// Act & Assert
+				await expect(sut.GetStudentById(studentId)).rejects.toThrow(expectedError)
+
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith(studentId)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+			})
+		})
+	})
+
+	describe("GetStudents", () => {
+		const students = [
+			new Student(
+				1,
+				"Trainee Smith",
+				new Date("1999-05-04"),
+				"male",
+				"trainee.smith@gmail.com",
+				"+36301234567"
+			),
+			new Student(
+				2,
+				"Trainee Newton",
+				new Date("2001-08-09"),
+				"female",
+				"trainee.newton@gmail.com",
+				"+36709373495"
+			),
+		]
+		const mockedMethod = mockedDbClient.GetStudentsFromDb
+
+		describe("Happy paths", () => {
+			it("should get all Students from database", async () => {
+				// Arrange
+				mockedMethod.mockResolvedValue(students)
+
+				// Act
+				const result = await sut.GetStudents()
+
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith()
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+				expect(result).toBe(students)
+			})
+		})
+
+		describe("Error paths", () => {
+			it("should throw a Network error if db client is not accessible", async () => {
+				// Arrange
+				const originalError = new Error(".....")
+				mockedMethod.mockRejectedValue(originalError)
+				const customErrorMessage = "Database client not accessible."
+				const expectedError = new NetworkError(customErrorMessage)
+
+				// Act & Assert
+				await expect(sut.GetStudents()).rejects.toThrow(expectedError)
+
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith()
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+			})
+		})
+	})
+
+	describe("GetCourseStatisticsByStudentId", () => {
+		const studentId = 1
+		const mockedMethod = mockedDbClient.GetCourseStatisticsByStudentIdFromDb
+
+		describe("Happy paths", () => {
+			it("should get Student from database", async () => {
+				// Arrange
+				const courseStatistics = [
+					new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12")),
+				]
+
+				mockedMethod.mockResolvedValue(courseStatistics)
+
+				// Act
+				const result = await sut.GetCourseStatisticsByStudentId(studentId)
+
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith(studentId)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
+				expect(result).toBe(courseStatistics)
+			})
+		})
+
+		describe("Error paths", () => {
+			it("should throw a Network error if db client is not accessible", async () => {
+				// Arrange
+				const originalError = new Error(".....")
+				mockedMethod.mockRejectedValue(originalError)
+				const customErrorMessage = "Database client not accessible."
+				const expectedError = new NetworkError(customErrorMessage)
+
+				// Act & Assert
+				await expect(sut.GetCourseStatisticsByStudentId(studentId)).rejects.toThrow(
+					expectedError
 				)
 
-				expect(mockedDbClient.GetStudentByIdFromDb).toHaveBeenCalledTimes(1)
+				// Assert
+				expect(mockedMethod).toHaveBeenCalledWith(studentId)
+				expect(mockedMethod).toHaveBeenCalledTimes(1)
 			})
 		})
 	})

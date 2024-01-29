@@ -8,57 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 export class FinancialApiClient {
-    constructor() {
-        this.paymentItems = [];
+    constructor(baseUrl) {
+        this.baseUrl = baseUrl;
     }
     GetIsOrderPaid(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
-            if (!paymentItem)
-                return false;
-            if (paymentItem.status === "not paid")
-                return false;
-            return true;
+            const response = yield fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`);
+            const data = yield response.json();
+            return data.status === "paid" ? true : false;
         });
     }
     ChangePaymentStatus(studentId, courseId, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = yield this.FindPaymentItem(studentId, courseId);
-            if (paymentItem) {
-                yield this.UpdatePaymentItem(paymentItem, status);
-            }
-            else {
-                yield this.AddPaymentItem(studentId, courseId, status);
-            }
-            return `Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`;
-        });
-    }
-    GetPaymentItems() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.paymentItems;
-        });
-    }
-    AddPaymentItem(studentId, courseId, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.paymentItems.push({
-                id: this.paymentItems.length + 1,
-                studentId,
-                courseId,
-                status,
+            const response = yield fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: status,
+                }),
             });
-        });
-    }
-    UpdatePaymentItem(paymentItem, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            paymentItem.status = status;
-        });
-    }
-    FindPaymentItem(studentId, courseId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const paymentItem = this.paymentItems.find((item) => item.studentId === studentId && item.courseId === courseId);
-            if (paymentItem)
-                return paymentItem;
-            return undefined;
         });
     }
 }

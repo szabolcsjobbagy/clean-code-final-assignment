@@ -21,10 +21,10 @@ export class CourseService {
             }
             const isCoursePaidByStudent = yield this.paymentService.GetIsOrderPaid(student.GetId(), courseId);
             if (!isCoursePaidByStudent) {
-                throw new Error(`Course ${course.GetId()} - ${course.GetName()} is not yet paid by student: ${student.GetId()} - ${student.GetName()}.`);
+                throw new Error(`Course ${course.GetId()} is not yet paid by student ${student.GetId()}.`);
             }
             yield this.courseRepository.AddStudentToCourse(student, course.GetId());
-            const message = `${student.GetId()} - ${student.GetName()} student was added to course: ${course.GetId()} - ${course.GetName()}.`;
+            const message = `Student ${student.GetId()} added to course ${course.GetId()}.`;
             yield this.notificationService.SendNotifications(message, student);
         });
     }

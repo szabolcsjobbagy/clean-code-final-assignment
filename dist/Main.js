@@ -41,16 +41,12 @@ function main() {
         yield courseRepository.AddLecturerToCourse(lecturer2, 2);
         yield courseRepository.AddCourse(course1);
         yield courseRepository.AddCourse(course2);
-        console.log(yield paymentService.PayForCourse(student1.GetId(), course1.GetId()));
-        console.log(yield paymentService.PayForCourse(student2.GetId(), course2.GetId()));
-        console.log("Payment items:\n");
-        console.log(yield financialApiClient.GetPaymentItems());
         yield courseService.AddPaidStudentToCourse(student1, course1.GetId());
         yield courseService.AddPaidStudentToCourse(student2, course2.GetId());
         yield courseStatisticsRepository.AddCourseStatistics(courseStatistics1);
         yield courseStatisticsRepository.AddCourseStatistics(courseStatistics2);
-        console.log(yield courseRepository.GetCourseStatisticsById(course1.GetId()));
-        console.log(yield courseRepository.GetCourseStatisticsById(course2.GetId()));
+        console.log(yield courseRepository.GetCourseStatisticsByCourseId(course1.GetId()));
+        console.log(yield courseRepository.GetCourseStatisticsByCourseId(course2.GetId()));
     });
 }
 function createModelInstances() {
@@ -75,7 +71,8 @@ function createModelInstances() {
 }
 function createClientInstances() {
     const dbClient = new DbClient();
-    const financialApiClient = new FinancialApiClient();
+    const baseUrl = "http://example-financial-api.com";
+    const financialApiClient = new FinancialApiClient(baseUrl);
     const emailClient = new EmailClient();
     const pushNotificationClient = new PushNotificationClient();
     const messageClients = [emailClient, pushNotificationClient];

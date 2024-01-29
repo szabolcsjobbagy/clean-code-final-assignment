@@ -8,6 +8,7 @@ export class PushNotificationClient implements IMessageClient {
 			throw new ValidationError("Invalid phone number.")
 		}
 
+		// Send push notification
 		console.log(
 			`Push notification sent to ${recipient.GetPhoneNumber()} with message: ${message}`
 		)

@@ -1,6 +1,7 @@
-import { CourseStatistics } from "../../models/CourseStatistics"
+import { CourseStatistics } from "../../models/CourseStatistics.js"
 
 export interface ICourseStatisticsRepository {
 	AddCourseStatistics(courseStatistics: CourseStatistics): Promise<void>
-	GetCourseStatisticsById(courseStatisticsId: number): Promise<CourseStatistics[]>
+	GetCourseStatisticsById(id: number): Promise<CourseStatistics | undefined>
+	GetCourseStatistics(): Promise<CourseStatistics[]>
 }

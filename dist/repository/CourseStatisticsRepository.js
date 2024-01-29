@@ -7,18 +7,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from "../errors/networkError.js";
+import { NotFoundError } from "../errors/notFoundError.js";
 export class CourseStatisticsRepository {
     constructor(dbClient) {
         this.dbClient = dbClient;
     }
     AddCourseStatistics(courseStatistics) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddCourseStatisticsToDb(courseStatistics);
+            try {
+                yield this.dbClient.AddCourseStatisticsToDb(courseStatistics);
+                console.log(`Course Statistics ${courseStatistics.GetId()} added to database.`);
+            }
+            catch (error) {
+                throw new NetworkError("Database client not accessible.", error);
+            }
         });
     }
-    GetCourseStatisticsById(courseStatisticsId) {
+    GetCourseStatisticsById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetCourseStatisticsFromDb(courseStatisticsId);
+            try {
+                return yield this.dbClient.GetCourseStatisticsByIdFromDb(id);
+            }
+            catch (error) {
+                if (error instanceof NotFoundError) {
+                    throw new NotFoundError(`Course Statistics ${id} not found in database.`);
+                }
+                throw new NetworkError("Database client not accessible.", error);
+            }
+        });
+    }
+    GetCourseStatistics() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.dbClient.GetCourseStatisticsFromDb();
+            }
+            catch (error) {
+                throw new NetworkError("Database client not accessible.", error);
+            }
         });
     }
 }

@@ -3,43 +3,69 @@ import { IDbClient } from "../abstraction/clients/IDbClient.js"
 import { CourseStatistics } from "../models/CourseStatistics.js"
 import { Student } from "../models/Student.js"
 import { Lecturer } from "../models/Lecturer.js"
+import { NetworkError } from "../errors/networkError.js"
 
 export class DbClient implements IDbClient {
 	async AddCourseToDb(course: Course): Promise<void> {
-		console.log(`Course ${course.GetId()} - ${course.GetName()} added to database.`)
+		try {
+			// Add item to database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async AddStudentToCourseInDb(student: Student, courseId: number): Promise<void> {
-		console.log(
-			`Student ${student.GetId()} - ${student.GetName()} added to course ${courseId} in database.`
-		)
+		try {
+			// Update item in database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async AddLecturerToCourseInDb(lecturer: Lecturer, courseId: number): Promise<void> {
-		console.log(
-			`Lecturer ${lecturer.GetId()} - ${lecturer.GetName()} added to course ${courseId} in database.`
-		)
+		try {
+			// Update item in database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async AddStudentToDb(student: Student): Promise<void> {
-		console.log(`Student ${student.GetId()} - ${student.GetName()} added to database.`)
+		try {
+			// Add item to database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async AddLecturerToDb(lecturer: Lecturer): Promise<void> {
-		console.log(`Lecturer ${lecturer.GetId()} - ${lecturer.GetName()} added to database.`)
+		try {
+			// Add item to database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async AddCourseStatisticsToDb(courseStatistics: CourseStatistics): Promise<void> {
-		console.log(`Course Statistics ${courseStatistics.GetId()} added to database.`)
+		try {
+			// Add item to database
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
-	async GetCourseByIdFromDb(id: number): Promise<Course> {
-		if (id == 1) return new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12"))
-		return new Course(2, "TypeScript ADVANCED", 65000, 4, new Date("2024-02-10"))
+	async GetCourseByIdFromDb(id: number): Promise<Course | undefined> {
+		try {
+			// Get item from database
+			return new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12"))
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
-	async GetStudentByIdFromDb(id: number): Promise<Student> {
-		if (id == 1)
+	async GetStudentByIdFromDb(id: number): Promise<Student | undefined> {
+		try {
+			// Get item from database
 			return new Student(
 				1,
 				"Trainee Smith",
@@ -48,18 +74,14 @@ export class DbClient implements IDbClient {
 				"trainee.smith@gmail.com",
 				"+36301234567"
 			)
-		return new Student(
-			2,
-			"Trainee Newton",
-			new Date("2001-08-09"),
-			"female",
-			"trainee.newton@gmail.com",
-			"+36709373495"
-		)
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
-	async GetLecturerByIdFromDb(id: number): Promise<Lecturer> {
-		if (id == 1)
+	async GetLecturerByIdFromDb(id: number): Promise<Lecturer | undefined> {
+		try {
+			// Get item from database
 			return new Lecturer(
 				1,
 				"Trainer Taylor",
@@ -68,67 +90,113 @@ export class DbClient implements IDbClient {
 				"trainer.taylor@gmail.com",
 				"+36203539854"
 			)
-		return new Lecturer(
-			2,
-			"Trainer Brown",
-			new Date("1986-01-01"),
-			"male",
-			"trainer.brown@gmail.com",
-			"+36208265385"
-		)
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async GetCoursesFromDb(): Promise<Course[]> {
-		return [
-			new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12")),
-			new Course(2, "TypeScript ADVANCED", 65000, 4, new Date("2024-02-10")),
-		]
+		try {
+			// Get item from database
+			return [
+				new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12")),
+				new Course(2, "TypeScript ADVANCED", 65000, 4, new Date("2024-02-10")),
+			]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async GetStudentsFromDb(): Promise<Student[]> {
-		return [
-			new Student(
-				1,
-				"Trainee Smith",
-				new Date("1999-05-04"),
-				"male",
-				"trainee.smith@gmail.com",
-				"+36301234567"
-			),
-			new Student(
-				2,
-				"Trainee Newton",
-				new Date("2001-08-09"),
-				"female",
-				"trainee.newton@gmail.com",
-				"+36709373495"
-			),
-		]
+		try {
+			// Get item from database
+			return [
+				new Student(
+					1,
+					"Trainee Smith",
+					new Date("1999-05-04"),
+					"male",
+					"trainee.smith@gmail.com",
+					"+36301234567"
+				),
+				new Student(
+					2,
+					"Trainee Newton",
+					new Date("2001-08-09"),
+					"female",
+					"trainee.newton@gmail.com",
+					"+36709373495"
+				),
+			]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
 	async GetLecturersFromDb(): Promise<Lecturer[]> {
-		return [
-			new Lecturer(
-				1,
-				"Trainer Taylor",
-				new Date("1986-01-01"),
-				"female",
-				"trainer.taylor@gmail.com",
-				"+36203539854"
-			),
-			new Lecturer(
-				2,
-				"Trainer Brown",
-				new Date("1986-01-01"),
-				"male",
-				"trainer.brown@gmail.com",
-				"+36208265385"
-			),
-		]
+		try {
+			// Get item from database
+			return [
+				new Lecturer(
+					1,
+					"Trainer Taylor",
+					new Date("1986-01-01"),
+					"female",
+					"trainer.taylor@gmail.com",
+					"+36203539854"
+				),
+				new Lecturer(
+					2,
+					"Trainer Brown",
+					new Date("1986-01-01"),
+					"male",
+					"trainer.brown@gmail.com",
+					"+36208265385"
+				),
+			]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 
-	async GetCourseStatisticsFromDb(courseId: number): Promise<CourseStatistics[]> {
-		if (courseId == 1) return [new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12"))]
-		return [new CourseStatistics(2, 2, 2, 0, 0, new Date("2024-02-10"))]
+	async GetCourseStatisticsByIdFromDb(
+		courseStatisticsId: number
+	): Promise<CourseStatistics | undefined> {
+		try {
+			// Get item from database
+			return new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12"))
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
+	}
+
+	async GetCourseStatisticsByStudentIdFromDb(studentId: number): Promise<CourseStatistics[]> {
+		try {
+			// Get item from database
+			return [new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12"))]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
+	}
+
+	async GetCourseStatisticsByCourseIdFromDb(courseId: number): Promise<CourseStatistics[]> {
+		try {
+			// Get item from database
+			return [new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12"))]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
+	}
+
+	async GetCourseStatisticsFromDb(): Promise<CourseStatistics[]> {
+		try {
+			// Get item from database
+			return [
+				new CourseStatistics(1, 1, 1, 0, 0, new Date("2024-01-12")),
+				new CourseStatistics(2, 2, 2, 0, 0, new Date("2024-02-10")),
+			]
+		} catch (error) {
+			throw new NetworkError("Database not accessible.", error as Error)
+		}
 	}
 }

@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">85.32</p>
+      <p class="stat">78.87</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">44</p>
+      <p class="stat">82</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">31.86</p>
+      <p class="stat">39.66</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.51</p>
+      <p class="stat">0.76</p>
     </div>
   </div>
 </div>
@@ -98,38 +98,76 @@
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from &quot;../errors/networkError.js&quot;;
+import { NotFoundError } from &quot;../errors/notFoundError.js&quot;;
 export class CourseRepository {
     constructor(dbClient) {
         this.dbClient = dbClient;
     }
     AddCourse(course) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddCourseToDb(course);
+            try {
+                yield this.dbClient.AddCourseToDb(course);
+                console.log(`Course ${course.GetId()} added to database.`);
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     AddStudentToCourse(student, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddStudentToCourseInDb(student, courseId);
+            try {
+                yield this.dbClient.AddStudentToCourseInDb(student, courseId);
+                console.log(`Student ${student.GetId()} added to course ${courseId} in database.`);
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     AddLecturerToCourse(lecturer, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddLecturerToCourseInDb(lecturer, courseId);
+            try {
+                yield this.dbClient.AddLecturerToCourseInDb(lecturer, courseId);
+                console.log(`Lecturer ${lecturer.GetId()} added to course ${courseId} in database.`);
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     GetCourseById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetCourseByIdFromDb(id);
+            try {
+                return yield this.dbClient.GetCourseByIdFromDb(id);
+            }
+            catch (error) {
+                if (error instanceof NotFoundError) {
+                    throw new NotFoundError(`Course ${id} not found in database.`);
+                }
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     GetCourses() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetCoursesFromDb();
+            try {
+                return yield this.dbClient.GetCoursesFromDb();
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
-    GetCourseStatisticsById(courseId) {
+    GetCourseStatisticsByCourseId(courseId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetCourseStatisticsFromDb(courseId);
+            try {
+                return yield this.dbClient.GetCourseStatisticsByCourseIdFromDb(courseId);
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
 }</textarea>

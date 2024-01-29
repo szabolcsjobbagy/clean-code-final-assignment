@@ -25,4 +25,22 @@ export class Person {
     GetPhoneNumber() {
         return this.phoneNumber;
     }
+    SetId(id) {
+        this.id = id;
+    }
+    SetName(name) {
+        this.name = name;
+    }
+    SetBirthDate(birthDate) {
+        this.birthDate = birthDate;
+    }
+    SetGender(gender) {
+        this.gender = gender;
+    }
+    SetEmailAddress(emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+    SetPhoneNumber(phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

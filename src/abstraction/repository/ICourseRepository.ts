@@ -9,5 +9,5 @@ export interface ICourseRepository {
 	AddLecturerToCourse(lecturer: Lecturer, courseId: number): Promise<void>
 	GetCourseById(courseId: number): Promise<Course | undefined>
 	GetCourses(): Promise<Course[]>
-	GetCourseStatisticsById(courseId: number): Promise<CourseStatistics[]>
+	GetCourseStatisticsByCourseId(courseId: number): Promise<CourseStatistics[]>
 }

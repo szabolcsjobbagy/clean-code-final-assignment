@@ -2,6 +2,8 @@
 
 -   Mindenhol a "...name"-eket "...id"-kra cseréltem, hogy ne a név (ami ismétlődhet) alapján, hanem egyedi azonosító (id) alapján találhassunk meg kurzusokat, diákokat, oktatókat stb.
 
+-   Összesen 116 unit tesztet írtam, és teljesen, 100%-ban lefedtem tesztekkel minden class-t, kivéve a DbClient class-t: ott hogyan tudom mock-olni az adatbázist, tudnál írni egy teszt példát az egyik metódusra?
+
 CourseService class:
 
 -   Mivel túl sok felelőssége volt a class-nak, kitöröltem belőle az "AddCourse", "GetCourseById", "GetCourses", "GetCourseStatistics" metódusokat, amelyeket a CourseRepository class amúgy is elvégez (itt csak azok duplikációja volt)
@@ -33,3 +35,7 @@ CourseStatisticsRepository, StudentRepository, LecturerRepository class-ok:
 DbClient class:
 
 -   Itt a beszédesebb "AddCourseToDb", "AddStudentToCourseInDb" stb. metódusneveket használtam
+
+Main.ts:
+
+-   Készítettem egy Main.ts fájlt, hogy egy html page-be bekötve, a DevTools-ban a console-on is ellenőrizni tudjam a loggolt message-eket, ez az 1 fájl 70 alatt van Maintainability Index-ben, de a többi fájl 75 fölötti

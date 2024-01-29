@@ -62,20 +62,14 @@ async function main() {
 	await courseRepository.AddCourse(course1)
 	await courseRepository.AddCourse(course2)
 
-	console.log(await paymentService.PayForCourse(student1.GetId(), course1.GetId()))
-	console.log(await paymentService.PayForCourse(student2.GetId(), course2.GetId()))
-
-	console.log("Payment items:\n")
-	console.log(await financialApiClient.GetPaymentItems())
-
 	await courseService.AddPaidStudentToCourse(student1, course1.GetId())
 	await courseService.AddPaidStudentToCourse(student2, course2.GetId())
 
 	await courseStatisticsRepository.AddCourseStatistics(courseStatistics1)
 	await courseStatisticsRepository.AddCourseStatistics(courseStatistics2)
 
-	console.log(await courseRepository.GetCourseStatisticsById(course1.GetId()))
-	console.log(await courseRepository.GetCourseStatisticsById(course2.GetId()))
+	console.log(await courseRepository.GetCourseStatisticsByCourseId(course1.GetId()))
+	console.log(await courseRepository.GetCourseStatisticsByCourseId(course2.GetId()))
 }
 
 function createModelInstances() {
@@ -134,7 +128,8 @@ function createModelInstances() {
 
 function createClientInstances() {
 	const dbClient = new DbClient()
-	const financialApiClient = new FinancialApiClient()
+	const baseUrl = "http://example-financial-api.com"
+	const financialApiClient = new FinancialApiClient(baseUrl)
 	const emailClient = new EmailClient()
 	const pushNotificationClient = new PushNotificationClient()
 	const messageClients = [emailClient, pushNotificationClient]

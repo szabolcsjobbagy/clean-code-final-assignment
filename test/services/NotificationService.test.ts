@@ -1,13 +1,13 @@
 import { mock, mockReset } from "jest-mock-extended"
 
-import { NotificationService } from "../../src/services/NotificationService"
-import { EmailClient } from "../../src/clients/EmailClient"
-import { PushNotificationClient } from "../../src/clients/PushNotificationClient"
-import { Person } from "../../src/models/Person"
-import { Course } from "../../src/models/Course"
-import { IMessageClient } from "../../src/abstraction/clients/IMessageClient"
-import { NetworkError } from "../../src/errors/networkError"
-import { ValidationError } from "../../src/errors/validationError"
+import { NotificationService } from "../../src/services/NotificationService.js"
+import { EmailClient } from "../../src/clients/EmailClient.js"
+import { PushNotificationClient } from "../../src/clients/PushNotificationClient.js"
+import { Person } from "../../src/models/Person.js"
+import { Course } from "../../src/models/Course.js"
+import { IMessageClient } from "../../src/abstraction/clients/IMessageClient.js"
+import { NetworkError } from "../../src/errors/networkError.js"
+import { ValidationError } from "../../src/errors/validationError.js"
 
 let sut: NotificationService
 
@@ -33,7 +33,7 @@ describe("NotificationService", () => {
 			"+36301234567"
 		)
 		const course = new Course(1, "TypeScript BASICS", 45000, 4, new Date("2024-01-12"))
-		const message = `${recipient.GetId()} - ${recipient.GetName()} student was added to course: ${course.GetId()} - ${course.GetName()}.`
+		const message = `Student ${recipient.GetId()} was added to course ${course.GetId()}.`
 
 		describe("Happy paths", () => {
 			it("should send notifications to recipient", async () => {

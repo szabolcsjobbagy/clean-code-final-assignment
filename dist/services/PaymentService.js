@@ -25,7 +25,8 @@ export class PaymentService {
     PayForCourse(studentId, courseId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid");
+                yield this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid");
+                console.log(`Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`);
             }
             catch (error) {
                 throw new NetworkError("Financial API client not accessible.", error);

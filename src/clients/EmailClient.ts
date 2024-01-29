@@ -8,6 +8,7 @@ export class EmailClient implements IMessageClient {
 			throw new ValidationError("Invalid email address.")
 		}
 
+		// Send email
 		console.log(
 			`Email notification sent to ${recipient.GetEmailAddress()} with message: ${message}`
 		)

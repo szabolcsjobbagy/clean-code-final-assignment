@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">84.43</p>
+      <p class="stat">79.59</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">29</p>
+      <p class="stat">50</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">29.41</p>
+      <p class="stat">33.91</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.36</p>
+      <p class="stat">0.50</p>
     </div>
   </div>
 </div>
@@ -98,23 +98,44 @@
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { NetworkError } from &quot;../errors/networkError.js&quot;;
+import { NotFoundError } from &quot;../errors/notFoundError.js&quot;;
 export class LecturerRepository {
     constructor(dbClient) {
         this.dbClient = dbClient;
     }
     AddLecturer(lecturer) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.dbClient.AddLecturerToDb(lecturer);
+            try {
+                yield this.dbClient.AddLecturerToDb(lecturer);
+                console.log(`Lecturer ${lecturer.GetId()} added to database.`);
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     GetLecturerById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetLecturerByIdFromDb(id);
+            try {
+                return yield this.dbClient.GetLecturerByIdFromDb(id);
+            }
+            catch (error) {
+                if (error instanceof NotFoundError) {
+                    throw new NotFoundError(`Lecturer ${id} not found in database.`);
+                }
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
     GetLecturers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.dbClient.GetLecturersFromDb();
+            try {
+                return yield this.dbClient.GetLecturersFromDb();
+            }
+            catch (error) {
+                throw new NetworkError(&quot;Database client not accessible.&quot;, error);
+            }
         });
     }
 }</textarea>

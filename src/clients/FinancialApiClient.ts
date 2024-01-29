@@ -1,63 +1,27 @@
-import { IFinancialApiClient, PaymentItem } from "../abstraction/clients/IFinancialApiClient"
+import { IFinancialApiClient } from "../abstraction/clients/IFinancialApiClient"
 
 export class FinancialApiClient implements IFinancialApiClient {
-	private paymentItems: PaymentItem[] = []
+	private readonly baseUrl: string
+
+	constructor(baseUrl: string) {
+		this.baseUrl = baseUrl
+	}
 
 	async GetIsOrderPaid(studentId: number, courseId: number): Promise<boolean> {
-		const paymentItem = await this.FindPaymentItem(studentId, courseId)
-
-		if (!paymentItem) return false
-		if (paymentItem.status === "not paid") return false
-		return true
+		const response = await fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`)
+		const data = await response.json()
+		return data.status === "paid" ? true : false
 	}
 
-	async ChangePaymentStatus(
-		studentId: number,
-		courseId: number,
-		status: string
-	): Promise<string> {
-		const paymentItem = await this.FindPaymentItem(studentId, courseId)
-
-		if (paymentItem) {
-			await this.UpdatePaymentItem(paymentItem, status)
-		} else {
-			await this.AddPaymentItem(studentId, courseId, status)
-		}
-
-		return `Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`
-	}
-
-	async GetPaymentItems(): Promise<PaymentItem[]> {
-		return this.paymentItems
-	}
-
-	private async AddPaymentItem(
-		studentId: number,
-		courseId: number,
-		status: string
-	): Promise<void> {
-		this.paymentItems.push({
-			id: this.paymentItems.length + 1,
-			studentId,
-			courseId,
-			status,
+	async ChangePaymentStatus(studentId: number, courseId: number, status: string): Promise<void> {
+		const response = await fetch(`${this.baseUrl}/orders/${studentId}/${courseId}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				status: status,
+			}),
 		})
-	}
-
-	private async UpdatePaymentItem(paymentItem: PaymentItem, status: string): Promise<void> {
-		paymentItem.status = status
-	}
-
-	private async FindPaymentItem(
-		studentId: number,
-		courseId: number
-	): Promise<PaymentItem | undefined> {
-		const paymentItem = this.paymentItems.find(
-			(item) => item.studentId === studentId && item.courseId === courseId
-		)
-
-		if (paymentItem) return paymentItem
-
-		return undefined
 	}
 }

@@ -84,11 +84,12 @@ describe("PaymentService", () => {
 		describe("Happy paths", () => {
 			it("should add/update payment status of order to 'paid'", async () => {
 				// Arrange
-				const responseMessage = "Payment status changed to 'paid'."
-				mockedFinancialApiClient.ChangePaymentStatus.mockResolvedValue(responseMessage)
+				mockedFinancialApiClient.ChangePaymentStatus.mockResolvedValue()
+				const consoleLogSpy = jest.spyOn(console, "log")
+				const expectedLoggedMessage = `Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`
 
 				// Act
-				const result = await sut.PayForCourse(studentId, courseId)
+				await sut.PayForCourse(studentId, courseId)
 
 				// Assert
 				expect(mockedFinancialApiClient.ChangePaymentStatus).toHaveBeenCalledWith(
@@ -98,7 +99,7 @@ describe("PaymentService", () => {
 				)
 
 				expect(mockedFinancialApiClient.ChangePaymentStatus).toHaveBeenCalledTimes(1)
-				expect(result).toBe(responseMessage)
+				expect(consoleLogSpy).toHaveBeenCalledWith(expectedLoggedMessage)
 			})
 		})
 

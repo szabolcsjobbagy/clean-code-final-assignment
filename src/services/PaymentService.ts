@@ -13,9 +13,12 @@ export class PaymentService implements IPaymentService {
 		}
 	}
 
-	async PayForCourse(studentId: number, courseId: number): Promise<string> {
+	async PayForCourse(studentId: number, courseId: number): Promise<void> {
 		try {
-			return await this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid")
+			await this.financialApiClient.ChangePaymentStatus(studentId, courseId, "paid")
+			console.log(
+				`Payment status of student ${studentId} for course ${courseId} changed to 'paid'.`
+			)
 		} catch (error) {
 			throw new NetworkError("Financial API client not accessible.", error as Error)
 		}
